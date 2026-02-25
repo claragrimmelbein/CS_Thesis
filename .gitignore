@@ -1,0 +1,7 @@
+Data/
+*.json
+*.pt
+*.pth
+*.csv
+__pycache__/
+.DS_Store

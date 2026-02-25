@@ -1,0 +1,10 @@
+# Ignore raw data and large tensors
+Data/
+*.json
+*.pt
+*.pth
+*.csv
+
+# Ignore Python cache
+__pycache__/
+.DS_Store
