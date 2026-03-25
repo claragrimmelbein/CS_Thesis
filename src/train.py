@@ -8,40 +8,37 @@ def train_model():
     X = torch.load('X_train.pt')
     y = torch.load('y_train.pt')
 
-    # reshape X to (Batch_Size, Sequence_Length, Input_Dim)
-    # our window size was 10, and we are using 1 feature (watch time)
-    X = X.unsqueeze(-1) 
 
     # initialize the Model
-    # input_dim=1, model_dim=32 (this is the size of the internal vectors)
-    model = SimpleTransformerPredictor(input_dim=1, model_dim=32)
+    # input_dim=1, model_dim=32 (size of the internal vectors)
+    model = SimpleTransformerPredictor(input_dim=3, model_dim=32)
     
     # define Loss Function (Mean Squared Error) and Optimizer (Adam)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     # training Loop
-    epochs = 10 # We'll start with 10 passes through the data
+    epochs = 10 # start with 10 passes through the data
     print("Starting Training...")
     
     for epoch in range(epochs):
         model.train()
         optimizer.zero_grad() # Reset the gradients
         
-        # forward pass: Get predictions
+        # forward pass: get predictions
         predictions = model(X)
         
-        # calculate the error (how far off we are from actual watch time)
+        # calculate the error (how far off  from actual watch time)
         loss = criterion(predictions.squeeze(), y)
         
-        # backward pass: The model learns from its mistakes
+        # backward pass
         loss.backward()
         optimizer.step()
         
         if (epoch + 1) % 2 == 0:
             print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
 
-    # save the trained "Brain"
+    # save 
     torch.save(model.state_dict(), 'tiktok_model.pth')
     print("Training Complete! Model saved as 'tiktok_model.pth'")
 
